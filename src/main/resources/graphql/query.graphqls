@@ -1,0 +1,49 @@
+type Query {
+	customer(id: Int): CustomerDto
+	customers: [CustomerDto]
+	invitation(id: Int): InvitationDto
+	invitations: [InvitationDto]
+	guest(id: Int): GuestDto
+	guests: [GuestDto]
+}
+
+type CustomerDto {
+	id: Int
+	name: String
+	lastName: String
+	username: String
+	fullName: String
+
+	email: String
+	password: String
+
+	invitations: [InvitationDto]
+}
+
+type InvitationDto {
+	id: Int
+
+	title: String
+	content: String
+	location: String
+
+	date: String
+	startTime: String
+	endTime: String
+
+	dateStartEnd: String
+
+	customer: CustomerDto
+	guests: [GuestDto]
+}
+
+type GuestDto {
+	id: Int
+
+	name: String
+
+	email: String
+	phoneNumber: String
+
+	invitation: InvitationDto
+}

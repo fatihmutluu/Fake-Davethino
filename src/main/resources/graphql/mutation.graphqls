@@ -1,0 +1,18 @@
+type Mutation {
+	register(registerDto: RegisterDto): CustomerDto
+	login(loginDto: LoginDto): String
+}
+
+input RegisterDto {
+	name: String!
+	lastName: String!
+	username: String!
+
+	email: String!
+	password: String!
+}
+
+input LoginDto {
+	emailOrUsername: String!
+	password: String!
+}
