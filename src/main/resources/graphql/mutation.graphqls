@@ -1,6 +1,8 @@
 type Mutation {
 	register(registerDto: RegisterDto): CustomerDto
 	login(loginDto: LoginDto): String
+
+	createInvitation(invitationRequest: invitationRequest): InvitationDto
 }
 
 input RegisterDto {
@@ -15,4 +17,22 @@ input RegisterDto {
 input LoginDto {
 	emailOrUsername: String!
 	password: String!
+}
+
+input invitationRequest {
+	title: String!
+	content: String!
+	location: String!
+
+	date: String!
+	startTime: String!
+	endTime: String!
+
+	guests: [GuestRequest]!
+}
+
+input GuestRequest {
+	name: String!
+	email: String!
+	phoneNumber: String!
 }

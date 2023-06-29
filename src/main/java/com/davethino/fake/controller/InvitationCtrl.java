@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.davethino.fake.dto.InvitationDto;
+import com.davethino.fake.dto.input.InvitationRequest;
 import com.davethino.fake.service.InvitationService;
 
 import graphql.kickstart.tools.GraphQLQueryResolver;
@@ -33,4 +34,6 @@ public class InvitationCtrl implements GraphQLQueryResolver {
                 .collect(Collectors.toList());
 
     }
+
+
 }

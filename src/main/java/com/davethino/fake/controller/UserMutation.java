@@ -12,7 +12,7 @@ import graphql.kickstart.tools.GraphQLMutationResolver;
 @Component
 public class UserMutation implements GraphQLMutationResolver {
 
-    CustomerService customerService;
+    private CustomerService customerService;
 
     public UserMutation(CustomerService customerService) {
         this.customerService = customerService;
