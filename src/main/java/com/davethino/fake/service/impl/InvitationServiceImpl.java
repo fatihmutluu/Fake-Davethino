@@ -12,10 +12,14 @@ import com.davethino.fake.dto.input.InvitationRequest;
 import com.davethino.fake.model.Customer;
 import com.davethino.fake.model.Guest;
 import com.davethino.fake.model.Invitation;
+import com.davethino.fake.notifications.EmailSender;
+import com.davethino.fake.notifications.SmsSender;
 import com.davethino.fake.repository.CustomerRepository;
 import com.davethino.fake.repository.GuestRepository;
 import com.davethino.fake.repository.InvitationRepository;
 import com.davethino.fake.service.InvitationService;
+
+import jakarta.transaction.Transactional;
 
 @Service
 public class InvitationServiceImpl implements InvitationService {
@@ -31,16 +35,20 @@ public class InvitationServiceImpl implements InvitationService {
         this.CustomerRepository = CustomerRepository;
     }
 
+    // ! Retrieves an invitation by ID
     @Override
     public Invitation getInvitationById(long id) {
         return invitationRepository.findById(id).get();
     }
 
+    // ! Retrieves all invitations
     @Override
     public List<Invitation> getAllInvitations() {
         return invitationRepository.findAll();
     }
 
+    // ! Creates a new invitation
+    @Transactional
     @Override
     public Invitation createInvitation(InvitationRequest invitationRequest) {
 
@@ -58,12 +66,18 @@ public class InvitationServiceImpl implements InvitationService {
 
         List<GuestRequest> guestRequests = invitationRequest.getGuests();
 
+        // ? Creates a new guest for each guest request
         for (GuestRequest guestRequest : guestRequests) {
             Guest guest = new Guest();
             guest.setName(guestRequest.getName());
+
             guest.setEmail(guestRequest.getEmail());
+            EmailSender.sendEmail(guestRequest.getEmail());
+
             guest.setPhoneNumber(guestRequest.getPhoneNumber());
-            guest.setInvitation(savedInvitation); // Establishing the one-to-many relationship
+            SmsSender.sendSms(guestRequest.getPhoneNumber());
+
+            guest.setInvitation(savedInvitation);
             guestRepository.save(guest);
 
         }

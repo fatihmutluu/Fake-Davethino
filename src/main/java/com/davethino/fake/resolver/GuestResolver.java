@@ -18,10 +18,9 @@ public class GuestResolver implements GraphQLResolver<GuestDto>{
         this.guestService = guestService;
     }
 
+    //! Retrieves the invitation associated with the guest
     public InvitationDto getInvitation(GuestDto guestDto) {
-
         Guest guest = guestService.getGuestById(guestDto.getId());
         return new InvitationDto(guest.getInvitation());
-        
     }
 }

@@ -1,7 +1,5 @@
 package com.davethino.fake.dto;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.List;
 
 import com.davethino.fake.model.Invitation;

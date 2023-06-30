@@ -14,14 +14,17 @@ public class GuestCtrl implements GraphQLQueryResolver {
 
     private GuestService guestService;
 
+    // ! Constructor
     public GuestCtrl(GuestService guestService) {
         this.guestService = guestService;
     }
 
+    // ! Retrieves a guest by ID
     public GuestDto getGuest(long id) {
         return new GuestDto(guestService.getGuestById(id));
     }
 
+    // ! Retrieves all guests
     public Iterable<GuestDto> getGuests() {
         return guestService.getAllGuests().stream().map(guest -> new GuestDto(guest)).collect(Collectors.toList());
     }

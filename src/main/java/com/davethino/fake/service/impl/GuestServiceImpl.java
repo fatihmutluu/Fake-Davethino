@@ -9,7 +9,7 @@ import com.davethino.fake.repository.GuestRepository;
 import com.davethino.fake.service.GuestService;
 
 @Service
-public class GuestServiceImpl implements GuestService{
+public class GuestServiceImpl implements GuestService {
 
     private GuestRepository guestRepository;
 
@@ -17,11 +17,13 @@ public class GuestServiceImpl implements GuestService{
         this.guestRepository = guestRepository;
     }
 
+    // ! Retrieves a guest by ID
     @Override
     public Guest getGuestById(long id) {
         return guestRepository.findById(id).get();
     }
-    
+
+    // ! Retrieves all guests
     @Override
     public List<Guest> getAllGuests() {
         return guestRepository.findAll();

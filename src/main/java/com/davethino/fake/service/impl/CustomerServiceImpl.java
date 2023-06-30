@@ -19,24 +19,22 @@ public class CustomerServiceImpl implements CustomerService {
         this.customerRepository = customerRepository;
     }
 
+    // ! Retrieves all customers
     @Override
     public List<Customer> findAll() {
-
         List<Customer> customers = customerRepository.findAll();
         return customers;
-
     }
 
+    // ! Retrieves a customer by ID
     @Override
     public Customer findById(long id) {
-
         return customerRepository.findById(id).get();
-
     }
 
+    // ! Registers a new customer
     @Override
     public Customer register(RegisterDto customer) {
-
         Customer newCustomer = new Customer();
         newCustomer.setName(customer.getName());
         newCustomer.setLastName(customer.getLastName());
@@ -46,9 +44,9 @@ public class CustomerServiceImpl implements CustomerService {
         newCustomer.setIsAdmin(false);
 
         return customerRepository.save(newCustomer);
-
     }
 
+    // ! Performs a login for a customer
     @Override
     public String login(LoginDto loginDto) {
         Customer customer = customerRepository.findByUsernameOrEmail(loginDto.getEmailOrUsername(),

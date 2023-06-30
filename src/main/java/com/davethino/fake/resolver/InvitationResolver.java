@@ -22,6 +22,7 @@ public class InvitationResolver implements GraphQLResolver<InvitationDto> {
         this.invitationService = invitationService;
     }
 
+    //! Retrieves the guests associated with the invitation
     public List<GuestDto> getGuests(InvitationDto invitationDto) {
         Invitation invitation = invitationService.getInvitationById(invitationDto.getId());
         return invitation.getGuests().stream().map(guest -> {
@@ -29,11 +30,13 @@ public class InvitationResolver implements GraphQLResolver<InvitationDto> {
         }).collect(Collectors.toList());
     }
 
+    //! Retrieves the customer associated with the invitation
     public CustomerDto getCustomer(InvitationDto invitationDto) {
         Invitation invitation = invitationService.getInvitationById(invitationDto.getId());
         return new CustomerDto(invitation.getCustomer());
     }
 
+    //! Returns the formatted date and time range of the invitation
     public String getDateStartEnd(InvitationDto invitationDto) {
         return invitationDto.getDate() + " " + invitationDto.getStartTime() + "-" + invitationDto.getEndTime();
     }
