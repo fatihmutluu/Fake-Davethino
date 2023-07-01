@@ -29,6 +29,8 @@ public class Guest {
     private String email;
     private String phoneNumber;
 
+    private boolean isAttending;
+
     @ManyToOne
     @JoinColumn(name = "invitation_id")
     private Invitation invitation;

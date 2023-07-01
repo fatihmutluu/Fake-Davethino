@@ -20,6 +20,8 @@ input LoginDto {
 }
 
 input invitationRequest {
+	userId: Int!
+
 	title: String!
 	content: String!
 	location: String!

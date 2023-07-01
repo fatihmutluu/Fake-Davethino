@@ -52,7 +52,7 @@ public class InvitationServiceImpl implements InvitationService {
     @Override
     public Invitation createInvitation(InvitationRequest invitationRequest) {
 
-        Customer customer = CustomerRepository.findById((long) 3).get();
+        Customer customer = CustomerRepository.findById((long) invitationRequest.getUserId()).get();
         Invitation invitation = new Invitation();
         invitation.setCustomer(customer);
         invitation.setTitle(invitationRequest.getTitle());
@@ -69,6 +69,7 @@ public class InvitationServiceImpl implements InvitationService {
         // ? Creates a new guest for each guest request
         for (GuestRequest guestRequest : guestRequests) {
             Guest guest = new Guest();
+            guest.setAttending(false);
             guest.setName(guestRequest.getName());
 
             guest.setEmail(guestRequest.getEmail());
