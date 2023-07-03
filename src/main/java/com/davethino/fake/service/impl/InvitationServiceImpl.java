@@ -2,7 +2,6 @@ package com.davethino.fake.service.impl;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -78,11 +77,14 @@ public class InvitationServiceImpl implements InvitationService {
 
         // ? Creates a new guest for each guest request
         for (GuestRequest guestRequest : guestRequests) {
+
             Guest guest = new Guest();
             guest.setAttending(false);
             guest.setName(guestRequest.getName());
             guest.setPhoneNumber(guestRequest.getPhoneNumber());
             guest.setEmail(guestRequest.getEmail());
+            guest.setInvitation(savedInvitation);
+            guestRepository.save(guest);
 
             emailSender.sendEmail(guest.getEmail(),
                     customer.getName() + " Invited You",
@@ -98,9 +100,6 @@ public class InvitationServiceImpl implements InvitationService {
             whatsAppSender.sendMessage(guest.getPhoneNumber(), new SmsDto(guest.getName(), customer.getName(),
                     invitation.getTitle(), invitation.getLocation(), invitation.getDate(), invitation.getStartTime())
                     .toString());
-
-            guest.setInvitation(savedInvitation);
-            guestRepository.save(guest);
 
         }
 
