@@ -16,6 +16,7 @@ import com.davethino.fake.notifications.email.EmailDto;
 import com.davethino.fake.notifications.email.EmailSender;
 import com.davethino.fake.notifications.sms.SmsDto;
 import com.davethino.fake.notifications.sms.SmsSender;
+import com.davethino.fake.notifications.whatsapp.WhatsAppSender;
 import com.davethino.fake.repository.CustomerRepository;
 import com.davethino.fake.repository.GuestRepository;
 import com.davethino.fake.repository.InvitationRepository;
@@ -31,14 +32,17 @@ public class InvitationServiceImpl implements InvitationService {
     private CustomerRepository CustomerRepository;
     private SmsSender smsSender;
     private EmailSender emailSender;
+    private WhatsAppSender whatsAppSender;
 
     public InvitationServiceImpl(InvitationRepository invitationRepository, GuestRepository guestRepository,
-            CustomerRepository CustomerRepository, SmsSender smsSender, EmailSender emailSender) {
+            CustomerRepository CustomerRepository, SmsSender smsSender, EmailSender emailSender,
+            WhatsAppSender whatsAppSender) {
         this.invitationRepository = invitationRepository;
         this.guestRepository = guestRepository;
         this.CustomerRepository = CustomerRepository;
         this.smsSender = smsSender;
         this.emailSender = emailSender;
+        this.whatsAppSender = whatsAppSender;
     }
 
     // ! Retrieves an invitation by ID
@@ -88,6 +92,10 @@ public class InvitationServiceImpl implements InvitationService {
                             .toString());
 
             smsSender.sendSms(guest.getPhoneNumber(), new SmsDto(guest.getName(), customer.getName(),
+                    invitation.getTitle(), invitation.getLocation(), invitation.getDate(), invitation.getStartTime())
+                    .toString());
+
+            whatsAppSender.sendMessage(guest.getPhoneNumber(), new SmsDto(guest.getName(), customer.getName(),
                     invitation.getTitle(), invitation.getLocation(), invitation.getDate(), invitation.getStartTime())
                     .toString());
 
