@@ -12,8 +12,10 @@ import com.davethino.fake.dto.input.InvitationRequest;
 import com.davethino.fake.model.Customer;
 import com.davethino.fake.model.Guest;
 import com.davethino.fake.model.Invitation;
-import com.davethino.fake.notifications.EmailSender;
-import com.davethino.fake.notifications.SmsSender;
+import com.davethino.fake.notifications.email.EmailDto;
+import com.davethino.fake.notifications.email.EmailSender;
+import com.davethino.fake.notifications.sms.SmsDto;
+import com.davethino.fake.notifications.sms.SmsSender;
 import com.davethino.fake.repository.CustomerRepository;
 import com.davethino.fake.repository.GuestRepository;
 import com.davethino.fake.repository.InvitationRepository;
@@ -27,12 +29,16 @@ public class InvitationServiceImpl implements InvitationService {
     private InvitationRepository invitationRepository;
     private GuestRepository guestRepository;
     private CustomerRepository CustomerRepository;
+    private SmsSender smsSender;
+    private EmailSender emailSender;
 
     public InvitationServiceImpl(InvitationRepository invitationRepository, GuestRepository guestRepository,
-            CustomerRepository CustomerRepository) {
+            CustomerRepository CustomerRepository, SmsSender smsSender, EmailSender emailSender) {
         this.invitationRepository = invitationRepository;
         this.guestRepository = guestRepository;
         this.CustomerRepository = CustomerRepository;
+        this.smsSender = smsSender;
+        this.emailSender = emailSender;
     }
 
     // ! Retrieves an invitation by ID
@@ -71,12 +77,19 @@ public class InvitationServiceImpl implements InvitationService {
             Guest guest = new Guest();
             guest.setAttending(false);
             guest.setName(guestRequest.getName());
-
-            guest.setEmail(guestRequest.getEmail());
-            EmailSender.sendEmail(guestRequest.getEmail());
-
             guest.setPhoneNumber(guestRequest.getPhoneNumber());
-            SmsSender.sendSms(guestRequest.getPhoneNumber());
+            guest.setEmail(guestRequest.getEmail());
+
+            emailSender.sendEmail(guest.getEmail(),
+                    customer.getName() + " Invited You",
+                    new EmailDto(guest.getName(), customer.getName(),
+                            invitation.getTitle(), invitation.getLocation(), invitation.getDate(),
+                            invitation.getStartTime())
+                            .toString());
+
+            smsSender.sendSms(guest.getPhoneNumber(), new SmsDto(guest.getName(), customer.getName(),
+                    invitation.getTitle(), invitation.getLocation(), invitation.getDate(), invitation.getStartTime())
+                    .toString());
 
             guest.setInvitation(savedInvitation);
             guestRepository.save(guest);
